@@ -28,26 +28,26 @@ RESET="\e[0m"
 
 # --- Обновление системы и установка зависимостей ---
 echo -e "${GREEN}Обновление системы и установка зависимостей...${RESET}"
-sudo apt update && sudo apt upgrade -y
-sudo apt install -y ca-certificates gnupg curl build-essential cmake \
+apt update && apt upgrade -y
+apt install -y ca-certificates gnupg curl build-essential cmake \
 libcurl4-openssl-dev libssl-dev libjansson-dev libgmp-dev autoconf automake libtool pkg-config git wget
 
 # --- Очистка старых версий CUDA ---
 echo -e "${GREEN}Удаление старых версий CUDA...${RESET}"
-sudo apt-get -y --purge remove "*cublas*" "cuda*" "nsight*" || true
-sudo apt autoremove -y
+apt-get -y --purge remove "*cublas*" "cuda*" "nsight*" || true
+apt autoremove -y
 
 # --- Установка CUDA ---
 echo -e "${GREEN}Загрузка и установка CUDA ${CUDA_VERSION}...${RESET}"
 cd /tmp
 wget -q $CUDA_PIN_URL
-sudo mv cuda-ubuntu2404.pin /etc/apt/preferences.d/cuda-repository-pin-600
+mv cuda-ubuntu2404.pin /etc/apt/preferences.d/cuda-repository-pin-600
 
 wget -q $CUDA_URL
-sudo dpkg -i $CUDA_PKG
-sudo cp /var/cuda-repo-ubuntu2404-${CUDA_VERSION}-local/cuda-*-keyring.gpg /usr/share/keyrings/
-sudo apt-get update
-sudo apt-get -y install cuda-toolkit-$CUDA_VERSION
+dpkg -i $CUDA_PKG
+cp /var/cuda-repo-ubuntu2404-${CUDA_VERSION}-local/cuda-*-keyring.gpg /usr/share/keyrings/
+apt-get update
+apt-get -y install cuda-toolkit-$CUDA_VERSION
 
 # --- Настройка переменных среды ---
 echo -e "${GREEN}Настройка переменных среды для CUDA...${RESET}"
